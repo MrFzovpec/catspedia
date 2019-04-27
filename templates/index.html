@@ -2,16 +2,20 @@
 {% block content %}
 <h1>Наши коты</h1>
 <a href="/add">Добавить своего</a>
+
+{% for cat in cats %}
+<div style="margin-bottom:3%" class="col-md-12">
     <div class="card-deck">
-    {% for cat in cats %}
-            <div class="card" style="max-width: 33%;">
-              <img src="{{ cat['photo'] }}" class="card-img-top"  alt="...">
-              <div class="card-body">
+        <div class="card" style="width: 100%;">
+            <img src="{{ cat['photo'] }}" class="card-img-top" alt="...">
+            <div class="card-body">
                 <h2 class="card-title">{{ cat['name'] }}</h2>
                 <p class="card-text">{{ cat['short_description'] }}</p>
                 <a href="/cats/{{ loop.index }}" class="btn btn-primary">Подробнее</a>
-              </div>
             </div>
-    {% endfor %}
+        </div>
     </div>
+</div>
+{% endfor %}
+
 {% endblock %}
