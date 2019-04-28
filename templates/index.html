@@ -1,17 +1,22 @@
 {% extends "base.html" %}
 {% block content %}
-<h1>Наши коты</h1>
-<a href="/add">Добавить своего</a>
+<div class="main-content">
 
-{% for cat in cats %}
-<div style="margin-bottom:3%" class="col-md-12">
-    <div class="card-deck">
-        <div class="card" style="width: 100%;">
-            <img src="{{ cat['photo'] }}" class="card-img-top" alt="...">
-            <div class="card-body">
-                <h2 class="card-title">{{ cat['name'] }}</h2>
-                <p class="card-text">{{ cat['short_description'] }}</p>
-                <a href="/cats/{{ loop.index }}" class="btn btn-primary">Подробнее</a>
+
+    <a href="/add">Добавить своего</a>
+    <br>
+    <h1 style="text-align: center;">Наши коты</h1>
+
+    {% for cat in cats %}
+    <div style="margin-bottom:3%" class="col-md-12">
+        <div class="card-deck">
+            <div class="card" style="width: 100%;">
+                <img src="{{ cat['photo'] }}" class="card-img-top" alt="...">
+                <div class="card-body">
+                    <h2 class="card-title">{{ cat['name'] }}</h2>
+                    <p class="card-text">{{ cat['short_description'] }}</p>
+                    <a href="/cats/{{ loop.index }}" class="btn btn-primary">Подробнее</a>
+                </div>
             </div>
         </div>
     </div>

@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="col">
+        <a href="/cats/{{session['pos_cat']}}">Назад</a>
+        <h1>Измененние кота</h1>
+        <form action="/edit/{{session['pos_cat']}}" method="POST">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Имя</label>
+                <textarea class="form-control" rows="1" name="name" placeholder="" required>{{cat['name']}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Фото</label>
+                <textarea class="form-control" rows="1" name="photo" placeholder="" required>{{cat['photo']}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Краткое описание</label>
+                <textarea class="form-control" rows="5" name="short_description" placeholder="" required>{{cat['short_description']}}</textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Описание</label>
+                <textarea class="form-control" rows="5"  name="description" placeholder="" required>{{cat['description']}}</textarea>
+            </div>
+            <input type="submit" class="btn btn-primary btn-lg" value="Готово"/>
+        </form>
+    </div>
+
+{% endblock %}

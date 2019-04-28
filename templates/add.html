@@ -1,23 +1,27 @@
 {% extends "base.html" %}
 {% block content %}
-    <h1>Добавление кота</h1>
-    <form action="/add" method="POST">
-        <div class="form-group">
-            <label for="exampleFormControlInput1">Имя</label>
-            <input type="text" class="form-control" name="name" placeholder="" required>
-        </div>
-        <div class="form-group">
-            <label for="exampleFormControlInput1">Фото</label>
-            <input type="text" class="form-control" name="photo" placeholder="" required>
-        </div>
-        <div class="form-group">
-            <label for="exampleFormControlTextarea1">Краткое описание</label>
-            <textarea class="form-control" rows="3" name="short_description" required></textarea>
-        </div>
-        <div class="form-group">
-            <label for="exampleFormControlTextarea1">Описание</label>
-            <textarea class="form-control" rows="3" name="description" required></textarea>
-        </div>
-        <input type="submit" class="btn btn-primary btn-lg" value="Добавить"/>
-    </form>
+
+    <div class="col">
+        <h1>Добавление кота</h1>
+        <form action="/add" method="POST">
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Имя</label>
+                <input type="text" class="form-control" name="name" placeholder="" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlInput1">Фото</label>
+                <input type="text" class="form-control" name="photo" placeholder="" required>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Краткое описание</label>
+                <textarea class="form-control" rows="3" name="short_description" required></textarea>
+            </div>
+            <div class="form-group">
+                <label for="exampleFormControlTextarea1">Описание</label>
+                <textarea class="form-control" rows="3" name="description" required></textarea>
+            </div>
+            <input type="submit" class="btn btn-primary btn-lg" value="Добавить"/>
+        </form>
+    </div>
+
 {% endblock %}
