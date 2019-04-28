@@ -2,7 +2,7 @@
 {% block content %}
 
     <div class="col">
-        <a href="/cats/{{session['pos_cat']}}">Назад</a>
+        <a href="/cats/{{cat['id']}}">Назад</a>
         <h1>Измененние кота</h1>
         <form action="/edit/{{session['pos_cat']}}" method="POST">
             <div class="form-group">

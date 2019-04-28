@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, session, redirect, url_for
 import json
 import datetime
 from pymongo import MongoClient
+from bson import ObjectId
 
 app = Flask(__name__)
 app.secret_key = 'jrfasefasefgj'
@@ -48,20 +49,19 @@ def add():
             "likes": 0
         }
         collection.insert_one(cat)
-        return redirect('/cats/{0}'.format(cats.count()))
+        cat['_id']
+        return redirect('/cats/{0}'.format(cat['_id']))
 
 @app.route('/edit/<id>', methods=['GET'])
 def edit(id):
-    cats = collection.find()
-    cat = cats[int(id)-1]
+    cat = collection.find_one({'_id': ObjectId(id)})
     if session['username'] == cat['author']:
         return render_template('edit.html', cat=cat, User=session['username'])
     else:
-        return redirect('/cats/'+str(id))
+        return redirect('/cats/' + id)
 @app.route('/edit/<id>', methods=['POST'])
 def edit_2(id):
-    cats = collection.find()
-    cat = cats[int(id)-1]
+    cat = collection.find_one({'_id': ObjectId(id)})
     cat["name"] = request.form['name']
     cat["description"] = request.form['description']
     cat["short_description"] = request.form['short_description']
@@ -77,11 +77,8 @@ def details(id):
     else:
 
         button_delete = "display: none"
-        cats = collection.find()
-        cat = cats[int(id) - 1]
-
-        session['id_cat'] = int(id) - 1
-        session['pos_cat'] = int(id)
+        cat = collection.find_one({'_id': ObjectId(id)})
+        session['pos_cat'] = id
         username = session['username']
         if username not in cat['liked']:
             text_like = "Поставить лайк"
@@ -94,8 +91,7 @@ def details(id):
         return render_template('details.html', cat=cat, id=id, User=username, style=button_delete, text_like=text_like)
 @app.route('/cats/delete_comment/<id>', methods=['POST'])
 def comment_delete(id):
-    cats = collection.find()
-    cat = cats[session['id_cat']]
+    cat = collection.find_one({'_id': ObjectId(session['id_cat'])})
     comments = cat['comments']
     for com in comments:
         if com['id'] == int(id):
@@ -104,20 +100,20 @@ def comment_delete(id):
         comments.remove(comment)
         id_send = { "_id": cat['_id'] }
         collection.update_one(id_send, {"$set":cat})
-    return redirect('/cats/' + str(session['id_cat']+1))
+    return redirect('/cats/' + session['id_cat'])
 
 @app.route('/cats/<id>/delete', methods=['GET'])
 def delete(id):
-
-    collection.delete_one(cats[int(id)-1])
+    cat = collection.find_one({'_id': ObjectId(id)})
+    collection.delete_one(cat)
     return redirect('/')
 @app.route('/like/<id>', methods=['GET'])
 def like(id):
     if session.get('auth', False) == False:
         return redirect('/')
     else:
-        cats = collection.find()
-        cat = cats[int(id) - 1]
+        cat = collection.find_one({'_id': ObjectId(id)})
+
         if session['username'] not in cat['liked']:
             cat['likes'] += 1
             cat['liked'].append(session['username'])
@@ -127,7 +123,7 @@ def like(id):
             cat['liked'].remove(session['username'])
         id_send = { "_id": cat['_id'] }
         collection.update_one(id_send, {"$set":cat})
-        return redirect('/cats/{0}'.format(int(id)))
+        return redirect('/cats/{0}'.format(id))
 
 
 @app.route('/comment/<id>', methods=['POST'])
@@ -136,8 +132,7 @@ def comment(id):
         return redirect('/')
     else:
         username = session['username']
-        cats = collection.find()
-        cat = cats[int(id) - 1]
+        cat = collection.find_one({'_id': ObjectId(id)})
         whole_time = datetime.datetime.now()
         fields = ['text']
         for field in fields:
@@ -152,7 +147,7 @@ def comment(id):
         cat['comments'].append(comment)
         id_send = { "_id": cat['_id'] }
         collection.update_one(id_send, {"$set":cat})
-        return redirect('/cats/{0}'.format(int(id)))
+        return redirect('/cats/{0}'.format(ObjectId(id)))
 @app.route('/')
 def secret():
     if session.get('auth', False) == True:
@@ -163,9 +158,7 @@ def secret():
 @app.route('/login', methods=['POST'])
 def login():
     login = request.form['login']
-    print(login)
     password = request.form['password']
-    print(password)
     if (users_collection.count({'login': login}) == 1) or (users_collection.count({'email': login}) == 1):
         user = users_collection.find_one({'login': login})
         if user['password'] == password:

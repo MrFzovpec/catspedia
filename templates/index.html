@@ -15,7 +15,7 @@
                 <div class="card-body">
                     <h2 class="card-title">{{ cat['name'] }}</h2>
                     <p class="card-text">{{ cat['short_description'] }}</p>
-                    <a href="/cats/{{ loop.index }}" class="btn btn-primary">Подробнее</a>
+                    <a href="/cats/{{ cat['_id'] }}" class="btn btn-primary">Подробнее</a>
                 </div>
             </div>
         </div>
